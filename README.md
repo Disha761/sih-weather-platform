@@ -1,129 +1,123 @@
-# React + TypeScript + Vite
+# VayuDrishti — Weather Intelligence Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A software platform developed for the **Smart India Hackathon (SIH)** to collect, analyze, and verify weather-related reports and provide useful insights about weather events across India.
 
-Currently, two official plugins are available:
+## 🌦️ Overview
 
+VayuDrishti aims to bring weather reports from multiple sources into one platform. It focuses on organizing public weather information, validating submitted reports, and presenting weather intelligence through a dashboard.
 
-## React Compiler
+## ✨ Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Weather Report Collection:** Supports weather reports from configured data sources.
+- **Report Verification:** Includes verification modules for report credibility and location validation.
+- **Duplicate Detection:** Helps identify potentially duplicated reports.
+- **Location Validation:** Checks location-related information associated with reports.
+- **Weather Data Ingestion:** Supports ingestion of weather information from configured sources.
+- **Weather Dashboard:** A frontend interface for presenting weather information and insights.
+- **Media Support:** Supports report submissions with optional photo or video files through the backend API.
 
-## Expanding the ESLint configuration
+## 🛠️ Technology Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Frontend**
+- React
+- TypeScript
+- Vite
+- CSS
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Backend**
+- Node.js
+- Express (where configured)
+- JavaScript
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+**Data and Analysis**
+- Weather datasets
+- Configured weather data sources
+- Report verification and scoring modules
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📁 Project Structure
 
+```text
+sih-weather-platform/
+├── backend/       # Backend services and verification modules
+├── public/        # Static assets
+├── src/           # Frontend application
+├── index.html
+├── package.json
+├── server.js
+├── vite.config.ts
+└── README.md
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚀 Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js and npm installed on your computer
+- Git (optional, for cloning the repository)
 
-## Backend (VayuDrishti)
+### 1. Clone the repository
 
-Quick start for the backend server used for report ingestion and verification.
+```bash
+git clone https://github.com/Disha761/sih-weather-platform.git
+cd sih-weather-platform
+```
 
-- Install dependencies for backend:
+### 2. Install frontend dependencies
 
-```powershell
+```bash
+npm install
+```
+
+### 3. Install backend dependencies
+
+```bash
 cd backend
 npm install
 cd ..
-npm install
 ```
 
-- Start backend from repo root (recommended):
+### 4. Configure environment variables
 
-```powershell
-# starts the backend via the root entrypoint
+Create a `.env` file inside the `backend/` directory if required by your configuration. Do not commit API keys, passwords, or other secrets to GitHub.
+
+### 5. Run the application
+
+Start the backend using the root script if available:
+
+```bash
 npm run start:backend
 ```
 
-- Or start directly from backend folder:
+Alternatively, follow the backend scripts configured in `backend/package.json`.
 
-```powershell
-cd backend
+Start the frontend in a separate terminal:
+
+```bash
 npm run dev
 ```
 
-Environment variables
-- Add a `.env` file in `backend/` for API keys and toggles.
-- To allow permissive submissions when city/state geocoding fails, set:
+Open the local URL shown by Vite in your terminal.
 
-```
-RELAX_LOCATION_VALIDATION=1
-```
+> Note: The exact commands and required environment variables depend on the scripts and configuration in the repository.
 
-When `RELAX_LOCATION_VALIDATION` is enabled, reports that fail location validation (invalid city/state, coordinate mismatch, or photo GPS mismatch) will still be accepted and saved, but will be marked with a location-warning so they can be reviewed manually.
+## 📡 Report Submission API
 
-Submitting reports
-- Use multipart `POST` to `/api/reports` with form fields like `title`, `description`, `event_category`, `city`, `state`, `latitude`, `longitude`, `event_time` and optional `photo`/`video` files.
-- Example (PowerShell):
+The backend documentation describes a report submission endpoint:
 
-```powershell
-curl.exe -X POST http://localhost:5000/api/reports \
-  -F "source_type=public" \
-  -F "source_name=test" \
-  -F "title=test report" \
-  -F "description=test description" \
-  -F "event_category=rain" \
-  -F "city=TestCity" \
-  -F "state=TestState" \
-  -F "latitude=12.34" \
-  -F "longitude=56.78" \
-  -F "event_time=2026-09-14T00:00:00Z"
-```
+`POST /api/reports`
 
-If the location is invalid, the API will return `400` with `code: "invalid_location"` unless `RELAX_LOCATION_VALIDATION` is enabled.
-```
+It accepts multipart form data containing report details such as title, description, event category, city, state, coordinates, event time, and optional media files.
+
+## 🎯 Project Goal
+
+The goal of VayuDrishti is to support better organization and verification of weather-related reports, helping users explore weather events and relevant information through a unified platform.
+
+## 👩‍💻 Developed For
+
+**Smart India Hackathon (SIH)**
+
+Developed by **Disha Joshi** and team.
+
+## 📌 Project Status
+
+Under development. Features and data-source integrations may evolve as development progresses.
